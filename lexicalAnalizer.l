@@ -39,10 +39,10 @@ COMMENT_LINE    "~~".*"\n"
 COMMENT_BLOCK   "~/"(.|\n)*"\\~"
 
 /* operadores aritmeticos */
-OP_SUMA         ["+"]
-OP_RESTA        ["-"]
-OP_MULT         ["*"]
-OP_DIV          ["/"]
+OP_SUMA         "+"
+OP_RESTA        "-"
+OP_MULT         "*"
+OP_DIV          "/"
 
 IDENT           {LETRA}({LETRA}|{DIGITO}|_)*
 ENTERO          {DIGITO}+[ul]?
@@ -91,12 +91,6 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 {IDENT}          { printf("Token: Clase 8, Valor: %d\n", pos_simbolos);
                     insertar_simbolo(yytext);
                   }
-
-">"             { printf("Token: Clase 9, Valor: 0\n"); }
-"<"             { printf("Token: Clase 9, Valor: 1\n"); }
-"=="            { printf("Token: Clase 9, Valor: 2\n"); }
-"<="            { printf("Token: Clase 9, Valor: 3\n"); }
-">="            { printf("Token: Clase 9, Valor: 4\n"); }
 
 {COMMENT_LINE}   { }
 {COMMENT_BLOCK}  { }

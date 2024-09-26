@@ -31,14 +31,22 @@ int pos_literales = 0;
 
 %option noyywrap
 
-DIGITO      [0-9]
-LETRA       [a-zA-Z]
-IDENT       {LETRA}({LETRA}|{DIGITO}|_)*
-ENTERO      {DIGITO}+[ul]?
-FLOAT       {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
-STRING      "\"[^\"]*\""
-COMMENT_LINE    "~~"[^\n]*
-COMMENT_BLOCK   "~/[^~]*\\~"
+/* expresiones regulares */
+DIGITO          [0-9]
+LETRA           [a-zA-Z]
+STRING          [#\#.*\##]
+COMMENT_LINE    "~~".*"\n"
+COMMENT_BLOCK   "~/"(.|\n)*"\\~"
+
+/* operadores aritmeticos */
+OP_SUMA         ["+"]
+OP_RESTA        ["-"]
+OP_MULT         ["*"]
+OP_DIV          ["/"]
+
+IDENT           {LETRA}({LETRA}|{DIGITO}|_)*
+ENTERO          {DIGITO}+[ul]?
+FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 
 %%
 
@@ -48,10 +56,11 @@ COMMENT_BLOCK   "~/[^~]*\\~"
                     insertar_literal(yytext);
                   }
 
-"\+"              { printf("Token: Clase 2, Valor: 0\n"); }
-"\-"              { printf("Token: Clase 2, Valor: 1\n"); }
-"\*"              { printf("Token: Clase 2, Valor: 2\n"); }
-"/"               { printf("Token: Clase 2, Valor: 3\n"); }
+{OP_SUMA}              { printf("Token: Clase 2, Valor: 0\n"); }
+{OP_RESTA}              { printf("Token: Clase 2, Valor: 1\n"); }
+{OP_MULT}              { printf("Token: Clase 2, Valor: 2\n"); }
+{OP_DIV}               { printf("Token: Clase 2, Valor: 3\n"); }
+
 "%"               { printf("Token: Clase 2, Valor: 4\n"); }
 "\+\+"            { printf("Token: Clase 2, Valor: 5\n"); }
 "\-\-"            { printf("Token: Clase 2, Valor: 6\n"); }
@@ -82,6 +91,12 @@ COMMENT_BLOCK   "~/[^~]*\\~"
                     insertar_simbolo(yytext);
                   }
 
+">"             { printf("Token: Clase 9, Valor: 0\n"); }
+"<"             { printf("Token: Clase 9, Valor: 1\n"); }
+"=="            { printf("Token: Clase 9, Valor: 2\n"); }
+"<="            { printf("Token: Clase 9, Valor: 3\n"); }
+">="            { printf("Token: Clase 9, Valor: 4\n"); }
+
 {COMMENT_LINE}   { }
 {COMMENT_BLOCK}  { }
 
@@ -90,17 +105,6 @@ COMMENT_BLOCK   "~/[^~]*\\~"
 .                { printf("Error léxico: %s\n", yytext); }
 
 %%
-
-void insertar_simbolo(const char *nombre) {
-    strcpy(tabla_simbolos[pos_simbolos].nombre, nombre);
-    tabla_simbolos[pos_simbolos].tipo = -1;
-    pos_simbolos++;
-}
-
-void insertar_literal(const char *dato) {
-    strcpy(tabla_literales[pos_literales].dato, dato);
-    pos_literales++;
-}
 
 int main(int argc, char **argv) {
     if (argc > 1) {
@@ -115,3 +119,15 @@ int main(int argc, char **argv) {
     return 0;
 }
 
+
+void insertar_simbolo(const char *nombre) {
+    strcpy(tabla_simbolos[pos_simbolos].nombre, nombre);
+    tabla_simbolos[pos_simbolos].tipo = -1;
+    pos_simbolos++;
+}
+
+
+void insertar_literal(const char *dato) {
+    strcpy(tabla_literales[pos_literales].dato, dato);
+    pos_literales++;
+}

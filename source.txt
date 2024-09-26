@@ -17,8 +17,8 @@ FOR(INT i = 0. i<10. i++) {
 }
 
 ~~llamada a funcion
-INT RESULT = collector + SUM(x, 10).
+INT RESULT = collector + SUM(x).
 
-INT SUM(INT a, INT b) {
-    return a+b.
+INT SUM(INT a) {
+    return a+2.
 }

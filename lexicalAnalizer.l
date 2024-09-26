@@ -112,11 +112,24 @@ int main(int argc, char **argv) {
         yyin = archivo;
     }
     yylex();
+    printf("Tabla de simbolos:\n");
+    for(int i = 0; i<25; i++) {
+        printf("simbolo %d: %s\n", i, tabla_simbolos[i].nombre);
+    }
     return 0;
 }
 
 
 void insertar_simbolo(const char *nombre) {
+
+    // buscar simbolo antes de insertar (evitando repetidos)
+    for(int i = 0; i<pos_simbolos; i++ ){
+        // si ya existe en la tabla...
+        if(strcmp( tabla_simbolos[i].nombre, nombre ) == 0)
+            return;
+    }
+
+    // si aun NO existe en la tabla de simbolos...
     strcpy(tabla_simbolos[pos_simbolos].nombre, nombre);
     tabla_simbolos[pos_simbolos].tipo = -1;
     pos_simbolos++;

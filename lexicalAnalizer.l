@@ -47,6 +47,10 @@ TablaLiteralesCadenas tabla_literales_cadenas;
 TablaLiteralesFlotantes tabla_literales_flotantes;
 TablaLiteralesEnteros tabla_literales_enteros;
 
+/* Archivos de entrada y salida*/
+FILE *archivoEntrada = NULL;
+FILE *archivoSalida = NULL;
+
 %}
 
 %option noyywrap
@@ -68,58 +72,58 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 
 %%
 
-{ENTERO}         { printf("Token: Clase 0, Valor: %d\n", tabla_literales_enteros.cantidad);
+{ENTERO}         { fprintf(archivoSalida, "Token: Clase 0, Valor: %d\n", tabla_literales_enteros.cantidad);
                     insertar_literal_entero(&tabla_literales_enteros, yytext);
                   }
 
-{FLOAT}          { printf("Token: Clase 1, Valor: %d\n", tabla_literales_flotantes.cantidad);
+{FLOAT}          { fprintf(archivoSalida, "Token: Clase 1, Valor: %d\n", tabla_literales_flotantes.cantidad);
                     insertar_literal_flotante(&tabla_literales_flotantes, yytext);
                   }
 
-{OP_SUMA}        { printf("Token: Clase 2, Valor: 0\n"); }
-{OP_RESTA}       { printf("Token: Clase 2, Valor: 1\n"); }
-{OP_MULT}        { printf("Token: Clase 2, Valor: 2\n"); }
-{OP_DIV}         { printf("Token: Clase 2, Valor: 3\n"); }
+{OP_SUMA}        { fprintf(archivoSalida, "Token: Clase 2, Valor: 0\n"); }
+{OP_RESTA}       { fprintf(archivoSalida, "Token: Clase 2, Valor: 1\n"); }
+{OP_MULT}        { fprintf(archivoSalida, "Token: Clase 2, Valor: 2\n"); }
+{OP_DIV}         { fprintf(archivoSalida, "Token: Clase 2, Valor: 3\n"); }
 
-"%"              { printf("Token: Clase 2, Valor: 4\n"); }
-"\+\+"           { printf("Token: Clase 2, Valor: 5\n"); }
-"\-\-"           { printf("Token: Clase 2, Valor: 6\n"); }
-"\*\*"           { printf("Token: Clase 2, Valor: 7\n"); }
+"%"              { fprintf(archivoSalida, "Token: Clase 2, Valor: 4\n"); }
+"\+\+"           { fprintf(archivoSalida, "Token: Clase 2, Valor: 5\n"); }
+"\-\-"           { fprintf(archivoSalida, "Token: Clase 2, Valor: 6\n"); }
+"\*\*"           { fprintf(archivoSalida, "Token: Clase 2, Valor: 7\n"); }
 
-[\{\}\[\]\(\)\.] { printf("Token: Clase 3, Valor: %c\n", yytext[0]); }
+[\{\}\[\]\(\)\.] { fprintf(archivoSalida, "Token: Clase 3, Valor: %c\n", yytext[0]); }
 
-{STRING}         { printf("Token: Clase 4, Valor: %d\n", tabla_literales_cadenas.cantidad);
+{STRING}         { fprintf(archivoSalida, "Token: Clase 4, Valor: %d\n", tabla_literales_cadenas.cantidad);
                     insertar_literal_cadena(&tabla_literales_cadenas, yytext);
                   }
 
-"BREAK"          { printf("Token: Clase 5, Valor: 0\n"); }
-"CASE"           { printf("Token: Clase 5, Valor: 1\n"); }
-"CHAR"           { printf("Token: Clase 5, Valor: 2\n"); }
-"CONTINUE"       { printf("Token: Clase 5, Valor: 3\n"); }
-"DO"             { printf("Token: Clase 5, Valor: 4\n"); }
-"DOUBLE"         { printf("Token: Clase 5, Valor: 5\n"); }
-"ELSE"           { printf("Token: Clase 5, Valor: 6\n"); }
-"FLOAT"          { printf("Token: Clase 5, Valor: 7\n"); }
-"FOR"            { printf("Token: Clase 5, Valor: 8\n"); }
-"IF"             { printf("Token: Clase 5, Valor: 9\n"); }
-"INT"            { printf("Token: Clase 5, Valor: 10\n"); }
-"LONG"           { printf("Token: Clase 5, Valor: 11\n"); }
-"RETURN"         { printf("Token: Clase 5, Valor: 12\n"); }
-"SHORT"          { printf("Token: Clase 5, Valor: 13\n"); }
-"SIZEOF"         { printf("Token: Clase 5, Valor: 14\n"); }
-"SWITCH"         { printf("Token: Clase 5, Valor: 15\n"); }
-"UNSIGNED"       { printf("Token: Clase 5, Valor: 16\n"); }
-"VOID"           { printf("Token: Clase 5, Valor: 17\n"); }
-"WHILE"          { printf("Token: Clase 5, Valor: 18\n"); }
+"BREAK"          { fprintf(archivoSalida, "Token: Clase 5, Valor: 0\n"); }
+"CASE"           { fprintf(archivoSalida, "Token: Clase 5, Valor: 1\n"); }
+"CHAR"           { fprintf(archivoSalida, "Token: Clase 5, Valor: 2\n"); }
+"CONTINUE"       { fprintf(archivoSalida, "Token: Clase 5, Valor: 3\n"); }
+"DO"             { fprintf(archivoSalida, "Token: Clase 5, Valor: 4\n"); }
+"DOUBLE"         { fprintf(archivoSalida, "Token: Clase 5, Valor: 5\n"); }
+"ELSE"           { fprintf(archivoSalida, "Token: Clase 5, Valor: 6\n"); }
+"FLOAT"          { fprintf(archivoSalida, "Token: Clase 5, Valor: 7\n"); }
+"FOR"            { fprintf(archivoSalida, "Token: Clase 5, Valor: 8\n"); }
+"IF"             { fprintf(archivoSalida, "Token: Clase 5, Valor: 9\n"); }
+"INT"            { fprintf(archivoSalida, "Token: Clase 5, Valor: 10\n"); }
+"LONG"           { fprintf(archivoSalida, "Token: Clase 5, Valor: 11\n"); }
+"RETURN"         { fprintf(archivoSalida, "Token: Clase 5, Valor: 12\n"); }
+"SHORT"          { fprintf(archivoSalida, "Token: Clase 5, Valor: 13\n"); }
+"SIZEOF"         { fprintf(archivoSalida, "Token: Clase 5, Valor: 14\n"); }
+"SWITCH"         { fprintf(archivoSalida, "Token: Clase 5, Valor: 15\n"); }
+"UNSIGNED"       { fprintf(archivoSalida, "Token: Clase 5, Valor: 16\n"); }
+"VOID"           { fprintf(archivoSalida, "Token: Clase 5, Valor: 17\n"); }
+"WHILE"          { fprintf(archivoSalida, "Token: Clase 5, Valor: 18\n"); }
 
-"="              { printf("Token: Clase 6, Valor: 0\n"); }
-"\+="            { printf("Token: Clase 6, Valor: 1\n"); }
+"="              { fprintf(archivoSalida, "Token: Clase 6, Valor: 0\n"); }
+"\+="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 1\n"); }
 
-"\|\|"           { printf("Token: Clase 7, Valor: 0\n"); }
-"&&"             { printf("Token: Clase 7, Valor: 1\n"); }
-"!"              { printf("Token: Clase 7, Valor: 2\n"); }
+"\|\|"           { fprintf(archivoSalida, "Token: Clase 7, Valor: 0\n"); }
+"&&"             { fprintf(archivoSalida, "Token: Clase 7, Valor: 1\n"); }
+"!"              { fprintf(archivoSalida, "Token: Clase 7, Valor: 2\n"); }
 
-{IDENT}          { printf("Token: Clase 8, Valor: %d\n", tabla_simbolos.cantidad);
+{IDENT}          { fprintf(archivoSalida, "Token: Clase 8, Valor: %d\n", tabla_simbolos.cantidad);
                     insertar_simbolo(&tabla_simbolos, yytext);
                   }
 
@@ -128,39 +132,54 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 
 [ \t\n]+         { }
 
-.                { printf("Error léxico: %s\n", yytext); }
+.                { fprintf(archivoSalida, "Error léxico: %s\n", yytext); }
 
 %%
 
 int main(int argc, char **argv) {
     if (argc > 1) {
-        FILE *archivo = fopen(argv[1], "r");
-        if (!archivo) {
+        archivoEntrada = fopen(argv[1], "r");
+        if (!archivoEntrada) {
             perror("Error al abrir el archivo");
             return 1;
         }
-        yyin = archivo;
+        
+        // archivo de entrada leido correctamente
+        yyin = archivoEntrada;
+
+        // si se elige un archivo de salida, escribimos en este
+        if(argc > 2) {
+            archivoSalida = fopen(argv[2], "w");
+            if (!archivoSalida) {
+                perror("Error al abrir el archivo de salida");
+                return 1;
+            }
+        } // si no se proporciona el archivo de salida, usamos la consola
+        else {  
+            archivoSalida = stdout;  // Si no se proporciona archivo de salida, usar la consola
+        }
     }
+
     yylex();
 
-    printf("Tabla de símbolos:\n");
+    fprintf(archivoSalida, "Tabla de símbolos:\n");
     for (int i = 0; i < tabla_simbolos.cantidad; i++) {
-        printf("TIPO[%d] símbolo %d: %s\n", tabla_simbolos.simbolos[i].tipo, i, tabla_simbolos.simbolos[i].nombre);
+        fprintf(archivoSalida, "TIPO[%d] símbolo %d: %s\n", tabla_simbolos.simbolos[i].tipo, i, tabla_simbolos.simbolos[i].nombre);
     }
 
-    printf("Tabla de literales (cadenas):\n");
+    fprintf(archivoSalida, "Tabla de literales (cadenas):\n");
     for (int i = 0; i < tabla_literales_cadenas.cantidad; i++) {
-        printf("Cadena %d: %s\n", i, tabla_literales_cadenas.cadenas[i].dato);
+        fprintf(archivoSalida, "Cadena %d: %s\n", i, tabla_literales_cadenas.cadenas[i].dato);
     }
 
-    printf("Tabla de literales (flotantes):\n");
+    fprintf(archivoSalida, "Tabla de literales (flotantes):\n");
     for (int i = 0; i < tabla_literales_flotantes.cantidad; i++) {
-        printf("Flotante %d: %s\n", i, tabla_literales_flotantes.flotantes[i].dato);
+        fprintf(archivoSalida, "Flotante %d: %s\n", i, tabla_literales_flotantes.flotantes[i].dato);
     }
 
-    printf("Tabla de literales (enteros):\n");
+    fprintf(archivoSalida, "Tabla de literales (enteros):\n");
     for (int i = 0; i < tabla_literales_enteros.cantidad; i++) {
-        printf("Entero %d: %s\n", i, tabla_literales_enteros.enteros[i].dato);
+        fprintf(archivoSalida, "Entero %d: %s\n", i, tabla_literales_enteros.enteros[i].dato);
     }
 
     return 0;

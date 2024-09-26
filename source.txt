@@ -1,0 +1,24 @@
+INT x = 12.
+STRING name = "AXEL BLA".
+
+~/
+Ciclo while para sumar hasta que
+x sea 15
+\~
+WHILE(x<=15) {
+    x++.
+}
+
+FLOAT avg = 15/3.
+
+LONG collector = 1.
+FOR(INT i = 0. i<10. i++) {
+    collector *= i.
+}
+
+~~llamada a funcion
+INT RESULT = collector + SUM(x, 10).
+
+INT SUM(INT a, INT b) {
+    return a+b.
+}

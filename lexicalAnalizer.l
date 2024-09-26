@@ -148,6 +148,15 @@ void insertar_simbolo(const char *nombre) {
 
 
 void insertar_literal(const char *dato) {
+
+    // buscar literal antes de insertar (evitando repetidos)
+    for(int i = 0; i<pos_simbolos; i++ ){ // O(n)
+        // si ya existe en la tabla...
+        if(strcmp( tabla_literales[i].dato, dato ) == 0)
+            return;
+    }
+
+    // si aún no existe la literal...
     strcpy(tabla_literales[pos_literales].dato, dato);
     pos_literales++;
 }

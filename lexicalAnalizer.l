@@ -72,6 +72,7 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 "\]"              { printf("Token: Clase 3, Valor: %c\n", yytext[0]); }
 "\("              { printf("Token: Clase 3, Valor: %c\n", yytext[0]); }
 "\)"              { printf("Token: Clase 3, Valor: %c\n", yytext[0]); }
+"."             { printf("Token: Clase 3, Valor: %c\n", yytext[0]); }
 
 {STRING}         { printf("Token: Clase 4, Valor: %d\n", pos_literales);
                     insertar_literal(yytext);
@@ -99,6 +100,7 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 
 {COMMENT_LINE}   { }
 {COMMENT_BLOCK}  { }
+","  { }
 
 [ \t\n]+         { }
 

@@ -50,7 +50,9 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 
 %%
 
-{ENTERO}         { printf("Token: Clase 0, Valor: %d\n", atoi(yytext)); }
+{ENTERO}         { printf("Token: Clase 0, Valor: %d\n", atoi(yytext)); 
+                    insertar_literal(yytext);
+                    }
 
 {FLOAT}          { printf("Token: Clase 1, Valor: %d\n", pos_literales);
                     insertar_literal(yytext);
@@ -112,9 +114,15 @@ int main(int argc, char **argv) {
         yyin = archivo;
     }
     yylex();
+
     printf("Tabla de simbolos:\n");
-    for(int i = 0; i<25; i++) {
-        printf("simbolo %d: %s\n", i, tabla_simbolos[i].nombre);
+    for(int i = 0; i<pos_simbolos; i++) {
+        printf("TIPO[%d] simbolo %d: %s\n", tabla_simbolos[i].tipo, i, tabla_simbolos[i].nombre);
+    }
+
+    printf("Tabla de literales:\n");
+    for(int i = 0; i<pos_literales; i++) {
+        printf("literal %d: %s\n", i, tabla_literales[i].dato);
     }
     return 0;
 }
@@ -123,7 +131,7 @@ int main(int argc, char **argv) {
 void insertar_simbolo(const char *nombre) {
 
     // buscar simbolo antes de insertar (evitando repetidos)
-    for(int i = 0; i<pos_simbolos; i++ ){
+    for(int i = 0; i<pos_simbolos; i++ ){ // O(n)
         // si ya existe en la tabla...
         if(strcmp( tabla_simbolos[i].nombre, nombre ) == 0)
             return;
@@ -131,7 +139,10 @@ void insertar_simbolo(const char *nombre) {
 
     // si aun NO existe en la tabla de simbolos...
     strcpy(tabla_simbolos[pos_simbolos].nombre, nombre);
+
+    // TODO: Buscar tipo del simbolo
     tabla_simbolos[pos_simbolos].tipo = -1;
+
     pos_simbolos++;
 }
 

@@ -1,5 +1,5 @@
 INT x = 12.
-STRING name = "AXEL BLA".
+STRING name = #AXEL BLA#.
 
 ~/
 Ciclo while para sumar hasta que

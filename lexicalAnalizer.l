@@ -1,41 +1,55 @@
 %{
-
+// bibliotecas estandar
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+// estructura para guardar los simbolos
 typedef struct {
     int posicion;
     char nombre[16];
     int tipo;
 } Simbolo;
 
+// estructura para la tabla de simbolos
 typedef struct {
+    // arreglo de 100 espacios de memoria
     Simbolo simbolos[100];
+    // longitud de la tabla
     int cantidad;
 } TablaSimbolos;
 
+// estructura para guardar las literales
 typedef struct {
     int posicion;
     char dato[100];
 } Literal;
 
+// tabla para guardar literales tipo cadena
 typedef struct {
+    // arreglo de 100 espacios
     Literal cadenas[100];
+    // longitud de la tabla
     int cantidad;
 } TablaLiteralesCadenas;
 
+// tabla para guardar literales tipo cadena
 typedef struct {
+    // arreglo de 100 espacios
     Literal flotantes[100];
+    // longitud de la tabla
     int cantidad;
 } TablaLiteralesFlotantes;
 
+// tabla para guardar literales enteras
 typedef struct {
+    // arreglo de 100 espacios
     Literal enteros[100];
+    // longitud de la tabla
     int cantidad;
 } TablaLiteralesEnteros;
 
-/* Funciones de inserción */
+/* Firmas de funciones de inserción */
 void insertar_simbolo(TablaSimbolos *tabla, const char *nombre);
 void insertar_literal_cadena(TablaLiteralesCadenas *tabla, const char *dato);
 void insertar_literal_flotante(TablaLiteralesFlotantes *tabla, const char *dato);

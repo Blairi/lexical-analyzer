@@ -132,6 +132,15 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 
 "="              { fprintf(archivoSalida, "Token: Clase 6, Valor: 0\n"); }
 "\+="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 1\n"); }
+"\-="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 2\n"); }
+"\*="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 3\n"); }
+"\/="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 4\n"); }
+"\%="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 5\n"); }
+"\&="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 6\n"); }
+"\^="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 7\n"); }
+"\|="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 8\n"); }
+"<<="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 9\n"); }
+">>="            { fprintf(archivoSalida, "Token: Clase 6, Valor: 10\n"); }
 
 "\|\|"           { fprintf(archivoSalida, "Token: Clase 7, Valor: 0\n"); }
 "&&"             { fprintf(archivoSalida, "Token: Clase 7, Valor: 1\n"); }

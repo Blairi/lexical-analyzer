@@ -22,6 +22,9 @@ INT SUM(INT a) {
     RETURN a+12.
 }
 
+~~ constante entera
+INT enteraUnsigned = 25ul.
+
 ~~ operadores de asignacion
 INT y = 10.
 

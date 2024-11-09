@@ -21,3 +21,13 @@ INT RESULT = collector + SUM(x).
 INT SUM(INT a) {
     RETURN a+12.
 }
+
+~~ operadores de asignacion
+INT y = 10.
+
+y >>= 1.
+y <<= 1.
+
+INT z = 20.
+z &= 21.
+z |= 12.

@@ -98,11 +98,11 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 
 %%
 
-{ENTERO}         { fprintf(archivoSalida, "Token: Clase 0, Valor: %d\n", tabla_literales_enteros.cantidad);
+{ENTERO}         { fprintf(archivoSalida, "Token: Clase 0, Valor: %s\n", yytext);
                     insertar_literal_entero(&tabla_literales_enteros, yytext);
                   }
 
-\s*([0-9]+)(u|l|ul|U|L|UL) { fprintf(archivoSalida, "Token: Clase 0, Valor: %d\n", tabla_literales_enteros.cantidad);
+\s*([0-9]+)(u|l|ul|U|L|UL) { fprintf(archivoSalida, "Token: Clase 0, Valor: %s\n", yytext);
                              insertar_literal_entero(&tabla_literales_enteros, yytext);
                             }
 

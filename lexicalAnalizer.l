@@ -90,6 +90,10 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
                     insertar_literal_entero(&tabla_literales_enteros, yytext);
                   }
 
+\s*([0-9]+)(u|l|ul|U|L|UL) { fprintf(archivoSalida, "Token: Clase 0, Valor: %d\n", tabla_literales_enteros.cantidad);
+                             insertar_literal_entero(&tabla_literales_enteros, yytext);
+                            }
+
 {FLOAT}          { fprintf(archivoSalida, "Token: Clase 1, Valor: %d\n", tabla_literales_flotantes.cantidad);
                     insertar_literal_flotante(&tabla_literales_flotantes, yytext);
                   }

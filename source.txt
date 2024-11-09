@@ -23,7 +23,9 @@ INT SUM(INT a) {
 }
 
 ~~ constante entera
-INT enteraUnsigned = 25ul.
+INT enteraUnsignedL = 25ul.
+INT enteraUnsigned = 65u.
+INT enteraLong = 32l.
 
 ~~ operadores de asignacion
 INT y = 10.

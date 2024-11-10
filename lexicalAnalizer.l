@@ -19,7 +19,7 @@
 // estructura para guardar los simbolos
 typedef struct {
     int posicion;
-    char nombre[16];
+    char nombre[14];
     int tipo;
 } Simbolo;
 
@@ -162,9 +162,14 @@ FLOAT           {DIGITO}+"."{DIGITO}+(e[+-]?{DIGITO}+)?
 "&&"             { fprintf(archivoSalida, "Token: Clase 7, Valor: 1\n"); }
 "!"              { fprintf(archivoSalida, "Token: Clase 7, Valor: 2\n"); }
 
-{IDENT}          { fprintf(archivoSalida, "Token: Clase 8, Valor: %d\n", tabla_simbolos.cantidad);
-                    insertar_simbolo(&tabla_simbolos, yytext);
-                  }
+{IDENT}          {
+                    if (strlen(yytext) > 15) {
+                        fprintf(archivoSalida, "Error léxico: Identificador excede los 15 caracteres: %s\n", yytext);
+                    } else {
+                        fprintf(archivoSalida, "Token: Clase 8, Valor: %d\n", tabla_simbolos.cantidad);
+                        insertar_simbolo(&tabla_simbolos, yytext);
+                    }
+                 }
 
 {COMMENT_LINE}   { }
 {COMMENT_BLOCK}  { }

@@ -4,6 +4,9 @@ STRING name2 = #KENCHO#.
 
 STRING copia_Axel = #AXEL BLA#.
 
+INT x12345678901234567123131 = 12.
+STRING name123456789012 = #MARGARET#.
+
 ~/
 Ciclo while para sumar hasta que
 x sea 15
@@ -21,6 +24,11 @@ INT RESULT = collector + SUM(x).
 INT SUM(INT a) {
     RETURN a+12.
 }
+
+~~ constante entera
+INT enteraUnsignedL = 25ul.
+INT enteraUnsigned = 65u.
+INT enteraLong = 32l.
 
 ~~ operadores de asignacion
 INT y = 10.

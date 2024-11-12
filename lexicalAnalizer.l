@@ -384,8 +384,9 @@ int main(int argc, char **argv) {
 
     
     redirigir_stdin_a_cadena(cadena_atomos->cadena);
-    c = getchar();
-    Program();
+    while ((c = getchar()) != EOF) { // si se encuentra un error, continuar
+        Program();
+    }
 
     return 0;
 }
@@ -766,37 +767,44 @@ void dec() {
     }
 }
 
-void Sent() {
-    if(c == 'a') {
+void Sent(){
+    if(c == 'a'){
         Asig();
-    } else if(c == 'd') {
+        return;
+    }else if(c = 'd'){
         doW();
-    } else if(c == 'i') {
+        return;
+    }else if(c = 'i'){
         IF();
-    } else if(c == 'k') {
+        return;
+    }else if(c = 'k'){
         SWITCH();
-    } else if(c == 'v') {
+        return;
+    }else if(c = 'v'){
         For();
-    } else if(c == 'x') {
+        return;
+    }else if(c = 'x'){
         Ret();
-    } else if(c == 'c') {
+        return;
+    }else if(c = 'c'){
         c = getchar();
-        if(c == '.') {
+        if(c == '.'){
+            c = getchar();
             return;
-        } else {
+        }else{
             error();
             return;
         }
-    } else if(c == 'b') {
+    }else if(c = 'b'){
         c = getchar();
-        if(c == '.') {
+        if(c == '.'){
+            c = getchar();
             return;
-        } else {
+        }else{
             error();
             return;
         }
-    }
-    else {
+    }else{
         error();
         return;
     }
@@ -817,43 +825,43 @@ void listaSent() {
     }
 }
 
-void doW() {
-    if(c == 'd') {
+void doW(){
+    if (c == 'd'){
         c = getchar();
-        if(c == '{') {
+        if (c == '{'){
             c = getchar();
-            listaSent();
-            if(c == '}') {
-                c = getchar();
-                if(c == 'w') {
-                    c == getchar();
-                    if(c == '(') {
-                        c = getchar();
-                        exprLog();
-                        if(c == ')') {
-                            c = getchar();
-                            return;
-                        } else {
-                            error();
-                            return;
-                        }
-                    } else {
-                        error();
-                        return;
-                    }
-                } else {
-                    error();
-                    return;
-                }
-            } else {
-                error();
-                return;
-            }
-        } else {
+        }else{
             error();
             return;
         }
-    } else {
+        listaSent();
+        if (c == '}'){
+            c = getchar();
+        }else{
+            error();
+            return;
+        }
+        if (c == 'w'){
+            c = getchar();
+        }else{
+            error();
+            return;
+        }
+        if (c == '('){
+            c = getchar();
+        }else{
+            error();
+            return;
+        }
+        exprLog();
+        if (c == ')'){
+            c = getchar();
+        }else{
+            error();
+            return;
+        }
+        return;
+    }else{
         error();
         return;
     }
@@ -1257,6 +1265,29 @@ void Igualdad(){
         return;
     }else if(c = 'o' || c == 'q' ){
         Func();
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+void Asig(){
+    if (c == 'a'){
+        c = getchar();
+        opAsig();
+        Igualdad();
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+void E(){
+    if(c == '(' || c == 'a' || c == 'n' || c == 'r' || c == 'l' || c == 'm'){
+        T();
+        Eprima();
         return;
     }else{
         error();

@@ -69,6 +69,8 @@ void insertar_literal_entero(TablaLiteralesEnteros *tabla, const char *dato);
 
 // funciones auxiliares
 void imprimir_tablas();
+void redirigir_stdin_a_cadena(const char *cadena);
+void restaurar_stdin();
 
 /* Tablas de símbolos y literales */
 TablaSimbolos tabla_simbolos;
@@ -94,6 +96,18 @@ CadenaAtomos *cadena_atomos;
 
 void inicializar_cadena();
 void insertar_atomo(char c);
+
+FILE *original_stdin;  // Para restaurar stdin después
+
+// caracter c y numero de linea global
+char c;
+int LINEA = 1;
+
+// firmas de funciones para las reglas gramaticales
+void error();
+void Program();
+void Func();
+void otraFunc();
 
 %}
 
@@ -336,6 +350,11 @@ int main(int argc, char **argv) {
     // Analizador Sintactico
     printf("\nCadena de atomos generada:\n%s\n", cadena_atomos->cadena);
 
+    
+    redirigir_stdin_a_cadena(cadena_atomos->cadena);
+    c = getchar();
+    Program();
+
     return 0;
 }
 
@@ -479,4 +498,486 @@ void insertar_literal_entero(TablaLiteralesEnteros *tabla, const char *dato) {
     strcpy(tabla->enteros[tabla->cantidad].dato, dato);
 
     tabla->cantidad++; // aumentamos la longitud de la tabla
+}
+
+
+// Función que redirige stdin a una cadena
+void redirigir_stdin_a_cadena(const char *cadena) {
+    original_stdin = stdin;  // Guardar stdin original
+    FILE *f = fmemopen((void *)cadena, strlen(cadena), "r");
+    if (f == NULL) {
+        perror("Error al crear flujo en memoria");
+        exit(1);
+    }
+    stdin = f;
+}
+
+// Función para restaurar stdin al flujo original
+void restaurar_stdin() {
+    if (stdin != original_stdin) {
+        fclose(stdin);    // Cerrar el flujo en memoria
+        stdin = original_stdin;  // Restaurar stdin original
+    }
+}
+
+
+void error() {
+    printf("Error en la linea %d se esperaba: ", LINEA);
+}
+/*
+    Reglas gramaticales ------------------------
+*/
+void Program() {
+    if(c == 'o' || c == 'q' || c == 'g' || c == 'u' || c == 'y' || c == 't' || c == 'h' || c == 'f') {
+        Func();
+        otraFunc();
+        return;
+    }
+    else {
+        error(); // imprime linea de error
+        printf("Se esperaba VOID/UNSIGNED/LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
+        return;
+    }
+}
+
+void otraFunc() {
+    if(c == 'o' || c == 'q' || c == 'g' || c == 'u' || c == 'y' || c == 't' || c == 'h' || c == 'f') {
+        Func();
+        otraFunc();
+        return;
+    } else if(c == EOF){
+        return;
+    }
+    else {
+        error(); // imprime linea de error
+        printf("Se esperaba VOID/UNSIGNED/LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
+        return;
+    }
+}
+
+void Func() {
+    if(c == 'o' || c == 'q' || c == 'g' || c == 'u' || c == 'y' || c == 't' || c == 'h' || c == 'f') {
+
+        TipoF();
+
+        if(c == 'a') {
+            c = getchar();
+        } else {
+            printf("Se esperaba identificador\n");
+            error();
+            return;
+        }
+
+        if(c == '{') {
+            c = getchar();            
+        } else {
+            printf("Se esperaba {\n");
+            error();
+            return;
+        }
+
+        Arg();
+
+        if(c == '}') {
+            c = getchar();            
+        } else {
+            printf("Se esperaba }\n");
+            error();
+            return;
+        }
+
+        if(c == '[') {
+            c = getchar();            
+        } else {
+            printf("Se esperaba [\n");
+            error();
+            return;
+        }
+
+        Cuerpo();
+
+        if(c == ']') {
+            c = getchar();            
+        } else {
+            printf("Se esperaba ]\n");
+            error();
+            return;
+        }
+    } else {
+        error(); // imprime linea de error
+        printf("Se esperaba VOID/UNSIGNED/LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
+        return;
+    }
+}
+
+void TipoF() {
+    if(c == 'o') {
+        c = getchar();
+        return;
+    } else if (c == 'q' || c == 'g' || c == 'u' || c == 'y' || c == 't' || c == 'h' || c == 'f') {
+        Tipo();
+        return;
+    } else {
+        error(); // imprime linea de error
+        printf("Se esperaba VOID/UNSIGNED/LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
+        return;
+    }
+}
+
+void Arg() {
+    if(c == 'q') {
+        Tipo();
+        return;
+    } else if(c == '}') {
+        return;
+    }
+    else {
+        error(); // imprime linea de error
+        printf("Se esperaba VOID/UNSIGNED/LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
+        return;
+    }
+}
+
+void Cuerpo() {
+    if(c == 'q') {
+        listaDec();
+        listaSent();
+        return;
+    } else {
+        error();
+        return;
+    }
+}
+
+void listaDec() {
+    if(c == 'q') {
+        D();
+        listaDec();
+        return;
+    } else if(c == 'a' || c == 'd' || c == 'i' || c == 'k' || c == 'u' || c == 'x' || c == 'c' || c == 'b' || c == ']' || c == EOF) {
+        return;
+    }
+    else {
+        error();
+        return;
+    }
+}
+
+void D() {
+    if(c == 'q') {
+        Tipo();
+        if(c == 'a') {
+            c = getchar();
+        } else {
+            error();
+            return;
+        }
+        if(c == '.') {
+            c = getchar();
+            return;
+        } else {
+            error();
+            return;
+        }
+    }
+    else {
+        error();
+        return;
+    }
+}
+
+void Tipo() {
+    if(c == 'q') {
+        unsig();
+        size();
+        dec();
+        return;
+    }
+    else {
+        error();
+        return;
+    }
+}
+
+void unsig() {
+    if(c == 'q') {
+        c = getchar();
+        return;
+    } else if(c == 'g' || c == 'u' || c == 'v' || c == 't' || c == 'h' || c == 'f') {
+        return;
+    }
+    else {
+        error();
+        return;
+    }
+}
+
+void size() {
+    if(c == 'g' || c == 'u' || c == 'y') {
+        c = getchar();
+        return;
+    } else if(c == 't' || c == 'h' || c == 'f') {
+        return;
+    }
+    else {
+        return;
+    }
+}
+
+void dec() {
+    if(c == 't' || c == 'h' || c == 'f') {
+        c = getchar();
+    }
+    else {
+        error();
+        return;
+    }
+}
+
+void Sent() {
+    if(c == 'a') {
+        Asig();
+    } else if(c == 'd') {
+        doW();
+    } else if(c == 'i') {
+        IF();
+    } else if(c == 'k') {
+        SWITCH();
+    } else if(c == 'v') {
+        For();
+    } else if(c == 'x') {
+        Ret();
+    } else if(c == 'c') {
+        c = getchar();
+        if(c == '.') {
+            return;
+        } else {
+            error();
+            return;
+        }
+    } else if(c == 'b') {
+        c = getchar();
+        if(c == '.') {
+            return;
+        } else {
+            error();
+            return;
+        }
+    }
+    else {
+        error();
+        return;
+    }
+}
+
+void listaSent() {
+    if(c == 'a' || c == 'd' || c == 'i' || c == 'k' || c == 'v' || c == 'x' || c == 'c' || c == 'b') {
+        Sent();
+        listaSent();
+        return;
+    }
+    else if (c == ']' || c == '}' || c == EOF) {
+        return;
+    }
+    else {
+        error();
+        return;
+    }
+}
+
+void doW() {
+    if(c == 'd') {
+        c = getchar();
+        if(c == '{') {
+            c = getchar();
+            listaSent();
+            if(c == '}') {
+                c = getchar();
+                if(c == 'w') {
+                    c == getchar();
+                    if(c == '(') {
+                        c = getchar();
+                        exprLog();
+                        if(c == ')') {
+                            c = getchar();
+                            return;
+                        } else {
+                            error();
+                            return;
+                        }
+                    } else {
+                        error();
+                        return;
+                    }
+                } else {
+                    error();
+                    return;
+                }
+            } else {
+                error();
+                return;
+            }
+        } else {
+            error();
+            return;
+        }
+    } else {
+        error();
+        return;
+    }
+}
+
+void exprLog() {
+    if(c == '!') {
+        c = getchar();
+        if(c == '(') {
+            c = getchar();
+            E();
+            if(c == ')') {
+                c = getchar();
+                return;
+            } else {
+                error();
+                return;
+            }
+        } else {
+            error();
+            return;
+        }
+    } else if(c == '(') {
+        c = getchar();
+        E();
+        if(c == ')') {
+            c = getchar();
+            opLog();
+            if(c == '(') {
+                c = getchar();
+                E();
+                if(c == ')') {
+                    c = getchar();
+                    return;
+                } else {
+                    error();
+                    return;
+                }
+            } else {
+                error();
+                return;    
+            }
+        } else {
+            error();
+            return;
+        }
+    } else {
+        error();
+        return;
+    }
+}
+
+void opLog() {
+    if(c == '&') {
+        c = getchar();
+    } else if(c == '|') {
+        c = getchar();
+    } else {
+        error();
+        return;
+    }
+}
+
+void IF() {
+    if(c == 'i') {
+        c = getchar();
+        if(c == '(') {
+            c = getchar();
+            exprLog();
+            if(c == ')') {
+                c = getchar();
+                if(c == '{') {
+                    c = getchar();
+                    listaSent();
+                    if(c == '}') {
+                        c = getchar();
+                        ELSE();
+                        return;
+                    } else {
+                        error();
+                        return;
+                    }
+                } else {
+                    error();
+                    return;
+                }
+            } else {
+                error();
+                return;
+            }
+        } else {
+            error();
+            return;
+        }
+    } else {
+        error();
+        return;
+    }
+}
+
+void ELSE() {
+    if(c == 'e') {
+        c = getchar();
+        if(c == '{') {
+            c = getchar();
+            listaSent();
+            if(c == '}') {
+                c = getchar();
+                return;
+            } else {
+                error();
+                return;
+            }
+        } else {
+            error();
+            return;
+        }
+    } else if(c == 'a' || c == 'd' || c == 'i' || c == 'k' || c == 'v' || c == 'x' || c == 'c' || c == 'b' || c == ']' c == EOF) {
+        return;
+    } else {
+        error();
+        return;
+    }
+}
+
+void For() {
+    if(c == 'v') {
+        c = getchar();
+        if(c == '(') {
+            E();
+            if(c == ')') {
+                c = getchar();
+                if(c == '{') {
+                    c = getchar();
+                    listaSent();
+                    if(c == '}') {
+                        c = getchar();
+                        return;
+                    } else {
+                        error();
+                        return;
+                    }
+                } else {
+                    error();
+                    return;
+                }
+            } else {
+                error();
+                return;
+            }
+        } else {
+            error();
+            return;
+        }
+    } else {
+        error();
+        return;
+    }
 }

@@ -384,9 +384,10 @@ int main(int argc, char **argv) {
 
     
     redirigir_stdin_a_cadena(cadena_atomos->cadena);
-    while ((c = getchar()) != EOF) { // si se encuentra un error, continuar
+    c = getchar();
+    // while ((c = getchar()) != EOF) { // si se encuentra un error, continuar
         Program();
-    }
+    // }
 
     return 0;
 }
@@ -561,6 +562,7 @@ void error() {
     Reglas gramaticales ------------------------
 */
 void Program() {
+    printf("analizando %c\n", c);
     if(c == 'o' || c == 'q') {
         Func();
         otraFunc();

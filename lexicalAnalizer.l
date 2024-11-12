@@ -561,7 +561,7 @@ void error() {
     Reglas gramaticales ------------------------
 */
 void Program() {
-    if(c == 'o' || c == 'q' || c == 'g' || c == 'u' || c == 'y' || c == 't' || c == 'h' || c == 'f') {
+    if(c == 'o' || c == 'q') {
         Func();
         otraFunc();
         return;
@@ -574,7 +574,7 @@ void Program() {
 }
 
 void otraFunc() {
-    if(c == 'o' || c == 'q' || c == 'g' || c == 'u' || c == 'y' || c == 't' || c == 'h' || c == 'f') {
+    if(c == 'o' || c == 'q') {
         Func();
         otraFunc();
         return;
@@ -589,7 +589,7 @@ void otraFunc() {
 }
 
 void Func() {
-    if(c == 'o' || c == 'q' || c == 'g' || c == 'u' || c == 'y' || c == 't' || c == 'h' || c == 'f') {
+    if(c == 'o' || c == 'q') {
 
         TipoF();
 
@@ -647,7 +647,7 @@ void TipoF() {
     if(c == 'o') {
         c = getchar();
         return;
-    } else if (c == 'q' || c == 'g' || c == 'u' || c == 'y' || c == 't' || c == 'h' || c == 'f') {
+    } else if (c == 'q') {
         Tipo();
         return;
     } else {
@@ -753,6 +753,7 @@ void size() {
         return;
     }
     else {
+        error();
         return;
     }
 }

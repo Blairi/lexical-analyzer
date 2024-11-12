@@ -108,6 +108,38 @@ void error();
 void Program();
 void Func();
 void otraFunc();
+void TipoF();
+void Arg();
+void Cuerpo();
+void listaDec();
+void D();
+void Tipo();
+void unsig();
+void size();
+void dec();
+void Sent();
+void listaSent();
+void doW();
+void exprLog();
+void opLog();
+void IF();
+void ELSE();
+void For();
+void Ret();
+void valRet();
+void SWITCH();
+void listaCase();
+void Case();
+void E();
+void Eprima();
+void T();
+void Tprima();
+void F();
+void Fprima();
+void G();
+void Asig();
+void Igualdad();
+void opAsig();
 
 %}
 
@@ -939,7 +971,7 @@ void ELSE() {
             error();
             return;
         }
-    } else if(c == 'a' || c == 'd' || c == 'i' || c == 'k' || c == 'v' || c == 'x' || c == 'c' || c == 'b' || c == ']' c == EOF) {
+    } else if(c == 'a' || c == 'd' || c == 'i' || c == 'k' || c == 'v' || c == 'x' || c == 'c' || c == 'b' || c == ']' || c == EOF) {
         return;
     } else {
         error();
@@ -977,6 +1009,256 @@ void For() {
             return;
         }
     } else {
+        error();
+        return;
+    }
+}
+
+//Tipo 4
+void valRet(){
+    if(c == '(' || c =='a' || c =='n' || c =='r'|| c =='l' || c =='m'){
+        E();
+        return;
+    }
+    else if(c==')'){
+        {
+            return;
+        }
+    }else{
+        error();
+        return;
+    }
+}
+
+//caso 4
+void listaCase(){
+    if(c == 'z'){
+        Case();
+        listaCase();
+        return;
+    }
+    else if(c == '}'){
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+//caso 2
+void Case(){
+    if(c == 'z'){
+        c = getchar();
+        if(c == 'n'){
+            c = getchar();
+        }else{
+            error();
+            return;
+        }
+        if(c == ')'){
+            c = getchar();
+        }else{
+            error();
+            return;
+        }
+        listaSent();
+        if(c == 'b'){
+            c = getchar();
+        }else{
+            error();
+            return;
+        }
+        if(c == '.'){
+            c = getchar();
+        }else{
+            error();
+            return;
+        }
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+//caso 4
+void T(){
+    if(c == '(' || c =='a' || c =='n' || c =='r'|| c =='l' || c =='m'){
+        F();
+        Tprima();
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+//caso 2 y 3
+void Eprima(){
+    if(c == '+'){
+        c = getchar();
+        T();
+        Eprima();
+        return;
+    }else if(c == '-'){
+        c = getchar();
+        T();
+        Eprima();
+        return;
+    }else if(c == ')' || c == EOF){
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+//caso 2 y 4
+void F(){
+    if (c == '('){
+        c = getchar();
+        E();
+        if (c == ')'){
+            c = getchar();
+            return;
+        }else{
+            error();
+            return;
+        }
+    }else if(c == 'a'){
+        c = getchar();
+        G();
+        return;
+    }else if(c == 'n'){
+        c = getchar();
+        return;
+    }else if (c == 'r' ){
+        c = getchar();
+        return;
+    }else if(c == 'l' || c == 'm'){
+        Fprima();
+        if (c == 'a'){
+            c = getchar();
+            return;
+        }else{
+            error();
+            return;
+        }
+    }else{
+        error();
+        return;
+    }
+}
+
+void Tprima(){
+    if(c == '*'){
+        c = getchar();
+        F();
+        Tprima();
+        return;
+    }else if(c == '/'){
+        c = getchar();
+        F();
+        Tprima();
+        return;
+    }else if(c == '%'){
+        c = getchar();
+        F();
+        Tprima();
+        return;
+    }else if(c == '+' || c == '-' || c == ')' || c == EOF){
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+
+//caso 1 y 3
+void Fprima(){
+    if(c == 'l'){
+        c = getchar();
+        return;
+    }else if(c == 'm'){
+        c = getchar();
+        return;
+    }else if(c == 'a'){
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+void G(){
+    if(c == 'l'){
+        c = getchar();
+        return;
+    }else if(c == 'm'){
+        c = getchar();
+        return;
+    }else if(c == '*' || c == '/' || c == '%' || c == '+' || c == '-' || c == EOF ){
+        return;
+    }else if(c == 'p'){
+        c = getchar();
+        F();
+        G();
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+void opAsig(){
+    if (c == '='){
+        c = getchar();
+        return;
+    }else if(c == '#'){
+        c = getchar();
+        return;
+    }else if(c == ';'){
+        c = getchar();
+        return;
+    }else if(c == '$'){
+        c = getchar();
+        return;
+    }else if(c == ','){
+        c = getchar();
+        return;
+    }else if(c == '?'){
+        c = getchar();
+        return;
+    }else if(c == ':'){
+        c = getchar();
+        return;
+    }else if(c == '^'){
+        c = getchar();
+        return;
+    }else if(c == '@'){
+        c = getchar();
+        return;
+    }else if(c == '<'){
+        c = getchar();
+        return;
+    }else if(c == '>'){
+        c = getchar();
+        return;
+    }else{
+        error();
+        return;
+    }
+}
+
+void Igualdad(){
+    if(c == '(' || c == 'a' || c == 'n' || c == 'r' || c == 'l' || c == 'm'){
+        E();
+        return;
+    }else if(c = 'o' || c == 'q' ){
+        Func();
+        return;
+    }else{
         error();
         return;
     }

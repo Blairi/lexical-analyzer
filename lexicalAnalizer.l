@@ -69,8 +69,6 @@ void insertar_literal_entero(TablaLiteralesEnteros *tabla, const char *dato);
 
 // funciones auxiliares
 void imprimir_tablas();
-void redirigir_stdin_a_cadena(const char *cadena);
-void restaurar_stdin();
 
 /* Tablas de símbolos y literales */
 TablaSimbolos tabla_simbolos;
@@ -97,11 +95,12 @@ CadenaAtomos *cadena_atomos;
 void inicializar_cadena();
 void insertar_atomo(char c);
 
-FILE *original_stdin;  // Para restaurar stdin después
-
 // caracter c y numero de linea global
 char c;
+int ind = 0;
 int LINEA = 1;
+
+char leer_caracter();
 
 // firmas de funciones para las reglas gramaticales
 void error();
@@ -382,12 +381,8 @@ int main(int argc, char **argv) {
     // Analizador Sintactico
     printf("\nCadena de atomos generada:\n%s\n", cadena_atomos->cadena);
 
-    
-    redirigir_stdin_a_cadena(cadena_atomos->cadena);
-    c = getchar();
-    // while ((c = getchar()) != EOF) { // si se encuentra un error, continuar
-        Program();
-    // }
+    c = leer_caracter();
+    Program();
 
     return 0;
 }
@@ -535,34 +530,19 @@ void insertar_literal_entero(TablaLiteralesEnteros *tabla, const char *dato) {
 }
 
 
-// Función que redirige stdin a una cadena
-void redirigir_stdin_a_cadena(const char *cadena) {
-    original_stdin = stdin;  // Guardar stdin original
-    FILE *f = fmemopen((void *)cadena, strlen(cadena), "r");
-    if (f == NULL) {
-        perror("Error al crear flujo en memoria");
-        exit(1);
-    }
-    stdin = f;
-}
-
-// Función para restaurar stdin al flujo original
-void restaurar_stdin() {
-    if (stdin != original_stdin) {
-        fclose(stdin);    // Cerrar el flujo en memoria
-        stdin = original_stdin;  // Restaurar stdin original
-    }
+char leer_caracter() {
+    if(ind > cadena_atomos->longitud) return -1;
+    return cadena_atomos->cadena[ind++];
 }
 
 
 void error() {
-    printf("Error en la linea %d se esperaba: ", LINEA);
+    // printf("Error en la linea %d se esperaba: ", LINEA);
 }
 /*
     Reglas gramaticales ------------------------
 */
 void Program() {
-    printf("analizando %c\n", c);
     if(c == 'o' || c == 'q') {
         Func();
         otraFunc();
@@ -596,7 +576,7 @@ void Func() {
         TipoF();
 
         if(c == 'a') {
-            c = getchar();
+            c = leer_caracter();
         } else {
             printf("Se esperaba identificador\n");
             error();
@@ -604,7 +584,7 @@ void Func() {
         }
 
         if(c == '{') {
-            c = getchar();            
+            c = leer_caracter();            
         } else {
             printf("Se esperaba {\n");
             error();
@@ -614,7 +594,7 @@ void Func() {
         Arg();
 
         if(c == '}') {
-            c = getchar();            
+            c = leer_caracter();            
         } else {
             printf("Se esperaba }\n");
             error();
@@ -622,17 +602,17 @@ void Func() {
         }
 
         if(c == '[') {
-            c = getchar();            
+            c = leer_caracter();            
         } else {
             printf("Se esperaba [\n");
             error();
             return;
         }
 
-        Cuerpo();
+        Cuerpo(); // entra el caracter [
 
         if(c == ']') {
-            c = getchar();            
+            c = leer_caracter();            
         } else {
             printf("Se esperaba ]\n");
             error();
@@ -647,7 +627,7 @@ void Func() {
 
 void TipoF() {
     if(c == 'o') {
-        c = getchar();
+        c = leer_caracter();
         return;
     } else if (c == 'q') {
         Tipo();
@@ -702,13 +682,13 @@ void D() {
     if(c == 'q') {
         Tipo();
         if(c == 'a') {
-            c = getchar();
+            c = leer_caracter();
         } else {
             error();
             return;
         }
         if(c == '.') {
-            c = getchar();
+            c = leer_caracter();
             return;
         } else {
             error();
@@ -736,7 +716,7 @@ void Tipo() {
 
 void unsig() {
     if(c == 'q') {
-        c = getchar();
+        c = leer_caracter();
         return;
     } else if(c == 'g' || c == 'u' || c == 'v' || c == 't' || c == 'h' || c == 'f') {
         return;
@@ -749,7 +729,7 @@ void unsig() {
 
 void size() {
     if(c == 'g' || c == 'u' || c == 'y') {
-        c = getchar();
+        c = leer_caracter();
         return;
     } else if(c == 't' || c == 'h' || c == 'f') {
         return;
@@ -762,7 +742,7 @@ void size() {
 
 void dec() {
     if(c == 't' || c == 'h' || c == 'f') {
-        c = getchar();
+        c = leer_caracter();
     }
     else {
         error();
@@ -790,18 +770,18 @@ void Sent(){
         Ret();
         return;
     }else if(c = 'c'){
-        c = getchar();
+        c = leer_caracter();
         if(c == '.'){
-            c = getchar();
+            c = leer_caracter();
             return;
         }else{
             error();
             return;
         }
     }else if(c = 'b'){
-        c = getchar();
+        c = leer_caracter();
         if(c == '.'){
-            c = getchar();
+            c = leer_caracter();
             return;
         }else{
             error();
@@ -830,35 +810,35 @@ void listaSent() {
 
 void doW(){
     if (c == 'd'){
-        c = getchar();
+        c = leer_caracter();
         if (c == '{'){
-            c = getchar();
+            c = leer_caracter();
         }else{
             error();
             return;
         }
         listaSent();
         if (c == '}'){
-            c = getchar();
+            c = leer_caracter();
         }else{
             error();
             return;
         }
         if (c == 'w'){
-            c = getchar();
+            c = leer_caracter();
         }else{
             error();
             return;
         }
         if (c == '('){
-            c = getchar();
+            c = leer_caracter();
         }else{
             error();
             return;
         }
         exprLog();
         if (c == ')'){
-            c = getchar();
+            c = leer_caracter();
         }else{
             error();
             return;
@@ -872,12 +852,12 @@ void doW(){
 
 void exprLog() {
     if(c == '!') {
-        c = getchar();
+        c = leer_caracter();
         if(c == '(') {
-            c = getchar();
+            c = leer_caracter();
             E();
             if(c == ')') {
-                c = getchar();
+                c = leer_caracter();
                 return;
             } else {
                 error();
@@ -888,16 +868,16 @@ void exprLog() {
             return;
         }
     } else if(c == '(') {
-        c = getchar();
+        c = leer_caracter();
         E();
         if(c == ')') {
-            c = getchar();
+            c = leer_caracter();
             opLog();
             if(c == '(') {
-                c = getchar();
+                c = leer_caracter();
                 E();
                 if(c == ')') {
-                    c = getchar();
+                    c = leer_caracter();
                     return;
                 } else {
                     error();
@@ -919,9 +899,9 @@ void exprLog() {
 
 void opLog() {
     if(c == '&') {
-        c = getchar();
+        c = leer_caracter();
     } else if(c == '|') {
-        c = getchar();
+        c = leer_caracter();
     } else {
         error();
         return;
@@ -930,17 +910,17 @@ void opLog() {
 
 void IF() {
     if(c == 'i') {
-        c = getchar();
+        c = leer_caracter();
         if(c == '(') {
-            c = getchar();
+            c = leer_caracter();
             exprLog();
             if(c == ')') {
-                c = getchar();
+                c = leer_caracter();
                 if(c == '{') {
-                    c = getchar();
+                    c = leer_caracter();
                     listaSent();
                     if(c == '}') {
-                        c = getchar();
+                        c = leer_caracter();
                         ELSE();
                         return;
                     } else {
@@ -967,12 +947,12 @@ void IF() {
 
 void ELSE() {
     if(c == 'e') {
-        c = getchar();
+        c = leer_caracter();
         if(c == '{') {
-            c = getchar();
+            c = leer_caracter();
             listaSent();
             if(c == '}') {
-                c = getchar();
+                c = leer_caracter();
                 return;
             } else {
                 error();
@@ -992,16 +972,16 @@ void ELSE() {
 
 void For() {
     if(c == 'v') {
-        c = getchar();
+        c = leer_caracter();
         if(c == '(') {
             E();
             if(c == ')') {
-                c = getchar();
+                c = leer_caracter();
                 if(c == '{') {
-                    c = getchar();
+                    c = leer_caracter();
                     listaSent();
                     if(c == '}') {
-                        c = getchar();
+                        c = leer_caracter();
                         return;
                     } else {
                         error();
@@ -1059,28 +1039,28 @@ void listaCase(){
 //caso 2
 void Case(){
     if(c == 'z'){
-        c = getchar();
+        c = leer_caracter();
         if(c == 'n'){
-            c = getchar();
+            c = leer_caracter();
         }else{
             error();
             return;
         }
         if(c == ')'){
-            c = getchar();
+            c = leer_caracter();
         }else{
             error();
             return;
         }
         listaSent();
         if(c == 'b'){
-            c = getchar();
+            c = leer_caracter();
         }else{
             error();
             return;
         }
         if(c == '.'){
-            c = getchar();
+            c = leer_caracter();
         }else{
             error();
             return;
@@ -1107,12 +1087,12 @@ void T(){
 //caso 2 y 3
 void Eprima(){
     if(c == '+'){
-        c = getchar();
+        c = leer_caracter();
         T();
         Eprima();
         return;
     }else if(c == '-'){
-        c = getchar();
+        c = leer_caracter();
         T();
         Eprima();
         return;
@@ -1127,29 +1107,29 @@ void Eprima(){
 //caso 2 y 4
 void F(){
     if (c == '('){
-        c = getchar();
+        c = leer_caracter();
         E();
         if (c == ')'){
-            c = getchar();
+            c = leer_caracter();
             return;
         }else{
             error();
             return;
         }
     }else if(c == 'a'){
-        c = getchar();
+        c = leer_caracter();
         G();
         return;
     }else if(c == 'n'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if (c == 'r' ){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == 'l' || c == 'm'){
         Fprima();
         if (c == 'a'){
-            c = getchar();
+            c = leer_caracter();
             return;
         }else{
             error();
@@ -1163,17 +1143,17 @@ void F(){
 
 void Tprima(){
     if(c == '*'){
-        c = getchar();
+        c = leer_caracter();
         F();
         Tprima();
         return;
     }else if(c == '/'){
-        c = getchar();
+        c = leer_caracter();
         F();
         Tprima();
         return;
     }else if(c == '%'){
-        c = getchar();
+        c = leer_caracter();
         F();
         Tprima();
         return;
@@ -1189,10 +1169,10 @@ void Tprima(){
 //caso 1 y 3
 void Fprima(){
     if(c == 'l'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == 'm'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == 'a'){
         return;
@@ -1204,15 +1184,15 @@ void Fprima(){
 
 void G(){
     if(c == 'l'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == 'm'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == '*' || c == '/' || c == '%' || c == '+' || c == '-' || c == EOF ){
         return;
     }else if(c == 'p'){
-        c = getchar();
+        c = leer_caracter();
         F();
         G();
         return;
@@ -1224,37 +1204,37 @@ void G(){
 
 void opAsig(){
     if (c == '='){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == '#'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == ';'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == '$'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == ','){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == '?'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == ':'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == '^'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == '@'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == '<'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else if(c == '>'){
-        c = getchar();
+        c = leer_caracter();
         return;
     }else{
         error();
@@ -1277,7 +1257,7 @@ void Igualdad(){
 
 void Asig(){
     if (c == 'a'){
-        c = getchar();
+        c = leer_caracter();
         opAsig();
         Igualdad();
         return;

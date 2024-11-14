@@ -1,41 +1,39 @@
-INT x = 12.
-STRING name = #AXEL BLA#.
-STRING name2 = #KENCHO#.
+VOID prueba {} UNSIGNED INT A[
+    INT x = 12.
+    STRING name = #AXEL BLA#.
+    STRING name2 = #KENCHO#.
+    ...
+    STRING copia_Axel = #AXEL BLA#.
 
-STRING copia_Axel = #AXEL BLA#.
+    INT x12345678901234567123131 = 12.
+    STRING name123456789012 = #MARGARET#.
 
-INT x12345678901234567123131 = 12.
-STRING name123456789012 = #MARGARET#.
+    ~/
+    Ciclo while para sumar hasta que
+    x sea 15
+    \~
+    x++.
 
-~/
-Ciclo while para sumar hasta que
-x sea 15
-\~
-x++.
+    FLOAT avg = 15/3.
+    avg = 13.41.
+    LONG collector = 1.
+    collector *= i.
 
-FLOAT avg = 15/3.
-avg = 13.41.
-LONG collector = 1.
-collector *= i.
+    ~~llamada a funcion
+    INT RESULT = collector + SUM(x).
 
-~~llamada a funcion
-INT RESULT = collector + SUM(x).
+    ~~ constante entera
+    INT enteraUnsignedL = 25ul.
+    INT enteraUnsigned = 65u.
+    INT enteraLong = 32l.
 
-INT SUM(INT a) {
-    RETURN a+12.
-}
+    ~~ operadores de asignacion
+    INT y = 10.
 
-~~ constante entera
-INT enteraUnsignedL = 25ul.
-INT enteraUnsigned = 65u.
-INT enteraLong = 32l.
+    y >>= 1.
+    y <<= 1.
 
-~~ operadores de asignacion
-INT y = 10.
-
-y >>= 1.
-y <<= 1.
-
-INT z = 20.
-z &= 21.
-z |= 12.
+    INT z = 20.
+    z &= 21.
+    z |= 12.
+]

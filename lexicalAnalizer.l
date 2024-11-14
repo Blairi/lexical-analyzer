@@ -537,7 +537,7 @@ char leer_caracter() {
 
 
 void error() {
-    // printf("Error en la linea %d se esperaba: ", LINEA);
+    printf("Error de sintaxis en el atomo %d -> %c\n", ind, c);
 }
 /*
     Reglas gramaticales ------------------------

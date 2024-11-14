@@ -1,8 +1,8 @@
-VOID prueba {} [
+VOID prueba {} UNSIGNED INT A[
     INT x = 12.
     STRING name = #AXEL BLA#.
     STRING name2 = #KENCHO#.
-
+    ...
     STRING copia_Axel = #AXEL BLA#.
 
     INT x12345678901234567123131 = 12.

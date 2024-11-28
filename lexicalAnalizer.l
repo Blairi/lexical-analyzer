@@ -1120,17 +1120,21 @@ void Ret() {
                     c = leer_caracter();
                     return;
                 } else {
+                    printf("se esperaba .\n");
                     error();
                 }
             } else {
+                printf("se esperaba )\n");
                 error();
             }
             
         } else {
+            printf("se esperaba (\n");
             error();
         }
         return;
     } else {
+        printf("se esperaba RETURN\n");
         error();
     }
 }
@@ -1171,23 +1175,28 @@ void SWITCH() {
                         return;
                     }
                     else {
+                        printf("se esperaba }\n");
                         error();
                     }
                 }
                 else {
+                    printf("se esperaba {\n");
                     error();
                 }
             }
             else {
+                printf("se esperaba IDENTIFICADOR\n");
                 error();
             }
         }
         else {
+            printf("se esperaba (\n");
             error();
         }
         return;
     }
     else {
+        printf("se esperaba SWITCH\n");
         error();
     }
 }
@@ -1439,6 +1448,7 @@ void Igualdad(){
 
             return;
         } else {
+            printf("se esperaba .\n");
             error();
         }
         return;
@@ -1459,15 +1469,19 @@ void Igualdad(){
                         c = leer_caracter();
                         return;
                     } else {
+                        printf("se esperaba ]\n");
                         error();
                     }
                 } else {
+                    printf("se esperaba }\n");
                     error();
                 }
             } else {
+                printf("se esperaba {\n");
                 error();
             }
         } else {
+            printf("se esperaba IDENTIFICADOR\n");
             error();
         }
         return;
@@ -1478,6 +1492,7 @@ void Igualdad(){
             leer_caracter();
             return;
         } else {
+            printf("se esperaba .\n");
             error();
         }
         return;

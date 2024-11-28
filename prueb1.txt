@@ -1,0 +1,21 @@
+VOID principal {INT w}
+[
+    UNSIGNED SHORT INT y.
+    w = 10 .
+    y =12 .
+    w <<=2 .
+    IF (!(y)){
+      y*=w.
+    }
+    ELSE{ }
+]
+
+INT Func_1{FLOAT x_1}
+[
+   LONG FLOAT x_2 .
+   x_2 = x_1 **3 .
+   DO
+   {
+      x_2 -= 20 .
+   } WHILE((x_2+5.8) && (x_1))   
+]

@@ -380,6 +380,7 @@ int main(int argc, char **argv) {
     
     // Analizador Sintactico
     printf("\nCadena de atomos generada:\n%s\n", cadena_atomos->cadena);
+    insertar_atomo(EOF);
 
     c = leer_caracter();
     Program();
@@ -542,23 +543,28 @@ void error() {
 /*
     Reglas gramaticales ------------------------
 */
-void Program() {
+void Program() { // o q g u y t h f
     printf("Program\n");
-    if(c == 'o' || c == 'q') {
+    if(c == 'o' || c == 'q' || c == 'g' || 
+        c == 'u' || c == 'y' || c == 't' || 
+        c == 'h' || c == 'f') {
+
         Func();
         otraFunc();
+
         return;
     }
     else {
         printf("Se esperaba VOID/UNSIGNED/LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
         error(); // imprime linea de error
-        return;
     }
 }
 
-void otraFunc() {
+void otraFunc() { // o q g u y t h f
     printf("otraFunc\n");
-    if(c == 'o' || c == 'q') {
+    if(c == 'o' || c == 'q' || c == 'g' || 
+        c == 'u' || c == 'y' || c == 't' || 
+        c == 'h' || c == 'f') {
         Func();
         otraFunc();
         return;
@@ -568,14 +574,15 @@ void otraFunc() {
     else {
         printf("Se esperaba VOID/UNSIGNED/LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
         error(); // imprime linea de error
-        return;
     }
 }
 
-void Func() {
+void Func() { // o q g u y t h f
     printf("Func\n");
-    if(c == 'o' || c == 'q') {
-
+    if(c == 'o' || c == 'q' || c == 'g' || 
+        c == 'u' || c == 'y' || c == 't' || 
+        c == 'h' || c == 'f') {
+        
         TipoF();
 
         if(c == 'a') {
@@ -583,7 +590,6 @@ void Func() {
         } else {
             printf("Se esperaba identificador\n");
             error();
-            return;
         }
 
         if(c == '{') {
@@ -591,7 +597,6 @@ void Func() {
         } else {
             printf("Se esperaba {\n");
             error();
-            return;
         }
 
         Arg();
@@ -601,7 +606,6 @@ void Func() {
         } else {
             printf("Se esperaba }\n");
             error();
-            return;
         }
 
         if(c == '[') {
@@ -609,44 +613,52 @@ void Func() {
         } else {
             printf("Se esperaba [\n");
             error();
-            return;
         }
 
-        Cuerpo(); // entra el caracter [
+        Cuerpo();
 
         if(c == ']') {
             c = leer_caracter();            
         } else {
             printf("Se esperaba ]\n");
             error();
-            return;
         }
+
+        return;
     } else {
         printf("Se esperaba VOID/UNSIGNED/LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
         error(); // imprime linea de error
-        return;
     }
 }
 
 void TipoF() {
     printf("TipoF\n");
-    if(c == 'o') {
+    if(c == 'o') { // o
         c = leer_caracter();
         return;
-    } else if (c == 'q') {
+    } else if (c == 'q' || c == 'g' || c == 'u' || // q g u y t h f
+            c == 'y' || c == 't' || c == 'h' || c == 'f') { 
         Tipo();
         return;
     } else {
         printf("Se esperaba VOID/UNSIGNED/LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
         error(); // imprime linea de error
-        return;
     }
 }
 
 void Arg() {
     printf("Arg\n");
-    if(c == 'q') {
+    if (c == 'q' || c == 'g' || c == 'u' || // q g u y t h f
+        c == 'y' || c == 't' || c == 'h' || c == 'f') {
+
         Tipo();
+
+        if(c == 'a') {
+            c = leer_caracter();
+        } else {
+            printf("Se esperaba identificador\n");
+            error();
+        }
         return;
     } else if(c == '}') {
         return;
@@ -654,69 +666,66 @@ void Arg() {
     else {
         printf("Se esperaba UNSIGNED o }\n");
         error(); // imprime linea de error
-        return;
     }
 }
 
 void Cuerpo() {
     printf("Cuerpo\n");
-    if(c == 'q') {
+    if (c == 'q' || c == 'g' || c == 'u' || // q g u y t h f
+        c == 'y' || c == 't' || c == 'h' || c == 'f') {
         listaDec();
         listaSent();
         return;
     } else {
         printf("Se esperaba UNSIGNED o }\n");
         error();
-        return;
     }
 }
 
 void listaDec() {
     printf("listaDec\n");
-    if(c == 'q') {
+    if (c == 'q' || c == 'g' || c == 'u' || // q g u y t h f
+        c == 'y' || c == 't' || c == 'h' || c == 'f') {
         D();
         listaDec();
         return;
-    } else if(c == 'a' || c == 'd' || c == 'i' || c == 'k' || c == 'u' || c == 'x' || c == 'c' || c == 'b' || c == ']' || c == EOF) {
+    } else if(c == 'a' || c == 'd' || c == 'i' || c == 'k' || c == 'v' || c == 'x' || c == 'c' || c == 'b' || c == '}' || c == ']' || c == EOF) {
         return;
     }
     else {
         printf("Se esperaba VOID/IDENTIFICADOR/DO/IF/SWITCH/DOUBLE/RETURN/CONTINUE/BREAK O ]\n");
         error();
-        return;
     }
 }
 
 void D() {
     printf("D\n");
-    if(c == 'q') {
+    if (c == 'q' || c == 'g' || c == 'u' || // q g u y t h f
+        c == 'y' || c == 't' || c == 'h' || c == 'f') {
         Tipo();
         if(c == 'a') {
             c = leer_caracter();
         } else {
             printf("Se esperaba IDENTIFICADOR\n");
             error();
-            return;
         }
         if(c == '.') {
             c = leer_caracter();
-            return;
         } else {
             printf("Se esperaba .\n");
             error();
-            return;
         }
     }
     else {
         printf("Se esperaba IDENTIFICADOR\n");
         error();
-        return;
     }
 }
 
 void Tipo() {
     printf("Tipo\n");
-    if(c == 'q') {
+    if (c == 'q' || c == 'g' || c == 'u' || // q g u y t h f
+        c == 'y' || c == 't' || c == 'h' || c == 'f') {
         unsig();
         size();
         dec();
@@ -725,7 +734,6 @@ void Tipo() {
     else {
         printf("Se esperaba UNSIGNED\n");
         error();
-        return;
     }
 }
 
@@ -734,40 +742,57 @@ void unsig() {
     if(c == 'q') {
         c = leer_caracter();
         return;
-    } else if(c == 'g' || c == 'u' || c == 'v' || c == 't' || c == 'h' || c == 'f') {
+    } else if(c == 'g' || c == 'u' || c == 'y' || c == 't'
+        || c == 'h' || c == 'f') {
         return;
     }
     else {
+        printf("%c XDDDDDDDDDDDD\n", c);
         printf("Se esperaba UNSIGNED/LONG/DOUBLE/FOR/INT/CHAR/FLOAT\n");
         error();
-        return;
     }
 }
 
 void size() {
     printf("size\n");
-    if(c == 'g' || c == 'u' || c == 'y') {
+    if(c == 'g') {
         c = leer_caracter();
         return;
-    } else if(c == 't' || c == 'h' || c == 'f') {
+    }
+    else if(c == 'u') {
+        c = leer_caracter();
+        return;
+    }
+    else if(c == 'y') {
+        c = leer_caracter();
+        return;
+    }
+    else if(c == 't' || c == 'h' || c == 'f') {
         return;
     }
     else {
         printf("Se esperaba LONG/DOUBLE/SHORT/INT/CHAR/FLOAT\n");
         error();
-        return;
     }
 }
 
 void dec() {
     printf("dec\n");
-    if(c == 't' || c == 'h' || c == 'f') {
+    if(c == 't') {
         c = leer_caracter();
+        return;
+    }
+    else if(c == 'h') {
+        c = leer_caracter();
+        return;
+    }
+    else if(c == 'f') {
+        c = leer_caracter();
+        return;
     }
     else {
         printf("Se esperaba INT/CHAR/FLOAT\n");
         error();
-        return;
     }
 }
 
@@ -776,22 +801,23 @@ void Sent(){
     if(c == 'a'){
         Asig();
         return;
-    }else if(c = 'd'){
+    }
+    else if(c == 'd'){
         doW();
         return;
-    }else if(c = 'i'){
+    }else if(c == 'i'){
         IF();
         return;
-    }else if(c = 'k'){
+    }else if(c == 'k'){
         SWITCH();
         return;
-    }else if(c = 'v'){
+    }else if(c == 'v'){
         For();
         return;
-    }else if(c = 'x'){
+    }else if(c == 'x'){
         Ret();
         return;
-    }else if(c = 'c'){
+    }else if(c == 'c'){
         c = leer_caracter();
         if(c == '.'){
             c = leer_caracter();
@@ -799,13 +825,11 @@ void Sent(){
         }else{
             printf("Se esperaba .\n");
             error();
-            return;
         }
-    }else if(c = 'b'){
+    }else if(c == 'b'){
         c = leer_caracter();
         if(c == '.'){
             c = leer_caracter();
-            return;
         }else{
             printf("Se esperaba .\n");
             error();
@@ -825,116 +849,120 @@ void listaSent() {
         listaSent();
         return;
     }
-    else if (c == ']' || c == '}' || c == EOF) {
+    else if ( c == ']' || c == EOF || c == '}') {
         return;
     }
     else {
         printf("Se esperaba IDENTIFICADOR/DO/IF/SWITCH/FOR/RETURN/CONTINUE/BREAK o ] o }\n");
         error();
-        return;
     }
 }
 
 void doW(){
     printf("doW\n");
     if (c == 'd'){
+
         c = leer_caracter();
         if (c == '{'){
             c = leer_caracter();
+            listaSent();
+
+            if (c == '}'){
+                c = leer_caracter();
+
+                if (c == 'w'){
+                    c = leer_caracter();
+
+                    if (c == '('){
+                        c = leer_caracter();
+                        exprLog();
+
+                        if (c == ')'){
+                            c = leer_caracter();
+                            return;
+                        }else{
+                            printf("Se esperaba )\n");
+                            error();
+                        }
+                    }else{
+                        printf("Se esperaba (\n");
+                        error();
+                    }
+                }else{
+                    printf("Se esperaba w\n");
+                    error();
+                }
+            }else{
+                printf("Se esperaba }\n");
+                error();
+            }
         }else{
             printf("Se esperaba {\n");
             error();
-            return;
-        }
-        listaSent();
-        if (c == '}'){
-            c = leer_caracter();
-        }else{
-            printf("Se esperaba }\n");
-            error();
-            return;
-        }
-        if (c == 'w'){
-            c = leer_caracter();
-        }else{
-            printf("Se esperaba w\n");
-            error();
-            return;
-        }
-        if (c == '('){
-            c = leer_caracter();
-        }else{
-            printf("Se esperaba (\n");
-            error();
-            return;
-        }
-        exprLog();
-        if (c == ')'){
-            c = leer_caracter();
-        }else{
-            printf("Se esperaba )\n");
-            error();
-            return;
         }
         return;
     }else{
         printf("Se esperaba DO\n");
         error();
-        return;
     }
 }
 
 void exprLog() {
     printf("exprLog\n");
     if(c == '!') {
+
         c = leer_caracter();
+
         if(c == '(') {
+
             c = leer_caracter();
             E();
+
             if(c == ')') {
                 c = leer_caracter();
                 return;
             } else {
                 printf("Se esperaba )\n");
                 error();
-                return;
             }
+
         } else {
             printf("Se esperaba (\n");
             error();
-            return;
         }
     } else if(c == '(') {
+
         c = leer_caracter();
         E();
+
         if(c == ')') {
+
             c = leer_caracter();
             opLog();
+
             if(c == '(') {
+
                 c = leer_caracter();
                 E();
+                
                 if(c == ')') {
                     c = leer_caracter();
                     return;
                 } else {
                     printf("Se esperaba )\n");
                     error();
-                    return;
                 }
             } else {
                 printf("Se esperaba (\n");
                 error();
-                return;    
             }
         } else {
             printf("Se esperaba )\n");
             error();
-            return;
         }
     } else {
         printf("Se esperaba !\n");
         error();
-        return;
     }
 }
 
@@ -942,27 +970,36 @@ void opLog() {
     printf("opLog\n");
     if(c == '&') {
         c = leer_caracter();
+        return;
     } else if(c == '|') {
         c = leer_caracter();
+        return;
     } else {
         printf("Se esperaba && o ||\n");
         error();
-        return;
     }
 }
 
 void IF() {
     printf("IF\n");
     if(c == 'i') {
+
         c = leer_caracter();
+
         if(c == '(') {
+
             c = leer_caracter();
             exprLog();
+
             if(c == ')') {
+
                 c = leer_caracter();
+
                 if(c == '{') {
+
                     c = leer_caracter();
                     listaSent();
+
                     if(c == '}') {
                         c = leer_caracter();
                         ELSE();
@@ -970,97 +1007,135 @@ void IF() {
                     } else {
                         printf("Se esperaba }\n");
                         error();
-                        return;
                     }
                 } else {
                     printf("Se esperaba {\n");
                     error();
-                    return;
                 }
             } else {
                 printf("Se esperaba )\n");
                 error();
-                return;
             }
         } else {
             printf("Se esperaba (\n");
             error();
-            return;
         }
+        return;
     } else {
         printf("Se esperaba IF\n");
         error();
-        return;
     }
 }
 
 void ELSE() {
     printf("ELSE\n");
     if(c == 'e') {
+
         c = leer_caracter();
+
         if(c == '{') {
+
             c = leer_caracter();
             listaSent();
+
             if(c == '}') {
                 c = leer_caracter();
                 return;
             } else {
                 printf("Se esperaba }\n");
                 error();
-                return;
             }
+            return;
         } else {
             printf("Se esperaba {\n");
             error();
-            return;
         }
-    } else if(c == 'a' || c == 'd' || c == 'i' || c == 'k' || c == 'v' || c == 'x' || c == 'c' || c == 'b' || c == ']' || c == EOF) {
+        return;
+    } else if(c == EOF) {
         return;
     } else {
         printf("Se esperaba ELSE/IDENTIFICADOR/DO/IF/SWITCH/FOR/RETURN/CONTINUE/BREAK o ]\n");
         error();
-        return;
     }
 }
 
 void For() {
     printf("For\n");
     if(c == 'v') {
+
         c = leer_caracter();
+
         if(c == '(') {
+
+            c = leer_caracter();
             E();
+
             if(c == ')') {
                 c = leer_caracter();
+
                 if(c == '{') {
+
                     c = leer_caracter();
                     listaSent();
+
                     if(c == '}') {
                         c = leer_caracter();
                         return;
                     } else {
                         printf("Se esperaba }\n");
                         error();
-                        return;
                     }
                 } else {
                     printf("Se esperaba {\n");
                     error();
-                    return;
                 }
             } else {
                 printf("Se esperaba )\n");
                 error();
-                return;
             }
         } else {
             printf("Se esperaba (\n");
             error();
-            return;
         }
+        return;
     } else {
         printf("Se esperaba FOR\n");
         error();
+    }
+}
+
+void Ret() {
+    printf("Ret\n");
+    if(c == 'x') {
+        c = leer_caracter();
+
+        if(c == '(') {
+            c = leer_caracter();
+            valRet();
+
+            if(c == ')') {
+                c = leer_caracter();
+
+                if(c == '.') {
+                    c = leer_caracter();
+                    return;
+                } else {
+                    printf("se esperaba .\n");
+                    error();
+                }
+            } else {
+                printf("se esperaba )\n");
+                error();
+            }
+            
+        } else {
+            printf("se esperaba (\n");
+            error();
+        }
         return;
+    } else {
+        printf("se esperaba RETURN\n");
+        error();
     }
 }
 
@@ -1068,17 +1143,61 @@ void For() {
 void valRet(){
     printf("valRet\n");
     if(c == '(' || c =='a' || c =='n' || c =='r'|| c =='l' || c =='m'){
+        c = leer_caracter();
         E();
         return;
     }
-    else if(c==')'){
-        {
-            return;
-        }
+    else if(c == ')') {
+        return;
     }else{
         printf("Se esperaba ( o ) o IDENTIFICADOR/CONSTANTE_ENTERA/CONSTANTE_FLOTANTE/--/++\n");
         error();
         return;
+    }
+}
+
+void SWITCH() {
+    if(c == 'k') {
+        c = leer_caracter();
+
+        if(c == '(') {
+            c = leer_caracter();
+
+            if(c == 'a') {
+                c = leer_caracter();
+
+                if(c == '{') {
+                    c = leer_caracter();
+                    listaCase();
+
+                    if(c == '}') {
+                        c = leer_caracter();
+                        return;
+                    }
+                    else {
+                        printf("se esperaba }\n");
+                        error();
+                    }
+                }
+                else {
+                    printf("se esperaba {\n");
+                    error();
+                }
+            }
+            else {
+                printf("se esperaba IDENTIFICADOR\n");
+                error();
+            }
+        }
+        else {
+            printf("se esperaba (\n");
+            error();
+        }
+        return;
+    }
+    else {
+        printf("se esperaba SWITCH\n");
+        error();
     }
 }
 
@@ -1090,12 +1209,11 @@ void listaCase(){
         listaCase();
         return;
     }
-    else if(c == '}'){
+    else if(c == '}' || c == EOF){
         return;
     }else{
         printf("Se esperaba CASE o }\n");
         error();
-        return;
     }
 }
 
@@ -1104,117 +1222,91 @@ void Case(){
     printf("Case\n");
     if(c == 'z'){
         c = leer_caracter();
+
         if(c == 'n'){
             c = leer_caracter();
+
+            if(c == ')'){
+                c = leer_caracter();
+                listaSent();
+
+                if(c == 'b'){
+                    c = leer_caracter();
+
+                    if(c == '.'){
+                        c = leer_caracter();
+                    }else{
+                        printf("Se esperaba .\n");
+                        error();
+                    }
+                }else{
+                    printf("Se esperaba BREAK\n");
+                    error();
+                }
+            }else{
+                printf("Se esperaba )\n");
+                error();
+            }
+
         }else{
             printf("Se esperaba CONSTANTE_ENTERA\n");
             error();
-            return;
-        }
-        if(c == ')'){
-            c = leer_caracter();
-        }else{
-            printf("Se esperaba )\n");
-            error();
-            return;
-        }
-        listaSent();
-        if(c == 'b'){
-            c = leer_caracter();
-        }else{
-            printf("Se esperaba BREAK\n");
-            error();
-            return;
-        }
-        if(c == '.'){
-            c = leer_caracter();
-        }else{
-            printf("Se esperaba .\n");
-            error();
-            return;
         }
         return;
     }else{
         printf("Se esperaba CASE\n");
         error();
-        return;
     }
 }
 
-//caso 4
-void T(){
-    printf("T\n");
-    if(c == '(' || c =='a' || c =='n' || c =='r'|| c =='l' || c =='m'){
-        F();
-        Tprima();
+void E(){
+    printf("E\n");
+    if(c == '(' || c == 'a' || c == 'n' || c == 'r' || c == 'l' || c == 'm'){
+        T();
+        Eprima();
         return;
+    if(c == ')' || c == EOF || c == '.' || c == '}') {
+        return;
+    }
     }else{
-        printf("Se esperaba ( o IDENTIFICADOR/CONSTANTE_ENTERA/CONSTANTE_FLOTANTE/--/++\n");
+        printf("Se esperaba ( o IDENTIFICADOR/CONSTANTE_ENTERA/CONSTANTE_FLOTANTE/++/--\n");
         error();
-        return;
     }
 }
 
-//caso 2 y 3
 void Eprima(){
     printf("Eprima\n");
     if(c == '+'){
         c = leer_caracter();
         T();
         Eprima();
+
         return;
     }else if(c == '-'){
         c = leer_caracter();
         T();
         Eprima();
+
         return;
-    }else if(c == ')' || c == EOF){
+    }else if(c == ')' || c == EOF || c == '.' 
+        || c == '}'){
         return;
     }else{
         printf("Se esperaba + - )\n");
         error();
-        return;
     }
 }
 
-//caso 2 y 4
-void F(){
-    printf("F\n");
-    if (c == '('){
-        c = leer_caracter();
-        E();
-        if (c == ')'){
-            c = leer_caracter();
-            return;
-        }else{
-            printf("Se esperaba )\n");
-            error();
-            return;
-        }
-    }else if(c == 'a'){
-        c = leer_caracter();
-        G();
+void T(){
+    printf("T\n");
+    if(c == '(' || c =='a' || c =='n' || c =='r'|| c =='l' || c =='m'){
+        F();
+        Tprima();
+
         return;
-    }else if(c == 'n'){
-        c = leer_caracter();
-        return;
-    }else if (c == 'r' ){
-        c = leer_caracter();
-        return;
-    }else if(c == 'l' || c == 'm'){
-        Fprima();
-        if (c == 'a'){
-            c = leer_caracter();
-            return;
-        }else{
-            printf("Se esperaba IDENTIFICADOR\n");
-            error();
-            return;
-        }
     }else{
-        printf("Se esperaba ( o IDENTIFICADOR o CONSTANTE_ENTERA/CONSTANTE_FLOTANTE/++/--\n");
+        printf("Se esperaba ( o IDENTIFICADOR/CONSTANTE_ENTERA/CONSTANTE_FLOTANTE/--/++\n");
         error();
-        return;
     }
 }
 
@@ -1224,28 +1316,72 @@ void Tprima(){
         c = leer_caracter();
         F();
         Tprima();
+
         return;
     }else if(c == '/'){
         c = leer_caracter();
         F();
         Tprima();
+
         return;
     }else if(c == '%'){
         c = leer_caracter();
         F();
         Tprima();
+
         return;
-    }else if(c == '+' || c == '-' || c == ')' || c == EOF){
+    }else if(c == '+' || c == '-' || c == ')' || c == EOF || c == '.'){
         return;
     }else{
         printf("Se esperaba * o / o + o - o )\n");
         error();
-        return;
     }
 }
 
+void F(){
+    printf("F\n");
+    if (c == '('){
+        c = leer_caracter();
+        E();
 
-//caso 1 y 3
+        if (c == ')'){
+            c = leer_caracter();
+            return;
+        }else{
+            printf("Se esperaba )\n");
+            error();
+        }
+        return;
+
+    }else if(c == 'a'){
+        c = leer_caracter();
+        G();
+
+        return;
+    }else if(c == 'n'){
+        c = leer_caracter();
+
+        return;
+    }else if (c == 'r' ){
+        c = leer_caracter();
+
+        return;
+    }else if(c == 'l' || c == 'm'){
+        Fprima();
+
+        if (c == 'a'){
+            c = leer_caracter();
+            return;
+        }else{
+            printf("Se esperaba IDENTIFICADOR\n");
+            error();
+        }
+    }else{
+        printf("Se esperaba ( o IDENTIFICADOR o CONSTANTE_ENTERA/CONSTANTE_FLOTANTE/++/--\n");
+        error();
+    }
+}
+
 void Fprima(){
     printf("Fprima\n");
     if(c == 'l'){
@@ -1267,78 +1403,24 @@ void G(){
     printf("G\n");
     if(c == 'l'){
         c = leer_caracter();
+
         return;
     }else if(c == 'm'){
         c = leer_caracter();
-        return;
-    }else if(c == '*' || c == '/' || c == '%' || c == '+' || c == '-' || c == EOF ){
+
         return;
     }else if(c == 'p'){
         c = leer_caracter();
         F();
         G();
+
+        return;
+    }else if(c == '*' || c == '/' || c == '%' || c == '+' 
+        || c == '-' || c == ')' || c == EOF || c == '.'){
         return;
     }else{
         printf("Se esperaba --/++ o * o / o + o - o **\n");
         error();
-        return;
-    }
-}
-
-void opAsig(){
-    printf("opAsig\n");
-    if (c == '='){
-        c = leer_caracter();
-        return;
-    }else if(c == '#'){
-        c = leer_caracter();
-        return;
-    }else if(c == ';'){
-        c = leer_caracter();
-        return;
-    }else if(c == '$'){
-        c = leer_caracter();
-        return;
-    }else if(c == ','){
-        c = leer_caracter();
-        return;
-    }else if(c == '?'){
-        c = leer_caracter();
-        return;
-    }else if(c == ':'){
-        c = leer_caracter();
-        return;
-    }else if(c == '^'){
-        c = leer_caracter();
-        return;
-    }else if(c == '@'){
-        c = leer_caracter();
-        return;
-    }else if(c == '<'){
-        c = leer_caracter();
-        return;
-    }else if(c == '>'){
-        c = leer_caracter();
-        return;
-    }else{
-        printf("Se esperaba = o += o -= o *= o /= o &= o ^= o |= o <<= o >>=\n");
-        error();
-        return;
-    }
-}
-
-void Igualdad(){
-    printf("Igualdad\n");
-    if(c == '(' || c == 'a' || c == 'n' || c == 'r' || c == 'l' || c == 'm'){
-        E();
-        return;
-    }else if(c = 'o' || c == 'q' ){
-        Func();
-        return;
-    }else{
-        printf("Se esperaba ( o IDENTIFICADOR/CONSTANTE_ENTERA/CONSTANTE_FLOTANTE/--/++ o VOID/UNSIGNED\n");
-        error();
-        return;
     }
 }
 
@@ -1348,22 +1430,127 @@ void Asig(){
         c = leer_caracter();
         opAsig();
         Igualdad();
+
         return;
     }else{
         printf("Se esperaba IDENTIFICADOR\n");
+        error();
+    }
+}
+
+void Igualdad(){
+    printf("Igualdad\n");
+    if(c == '(' || c == 'a' || c == 'n' || c == 'r' || c == 'l' || c == 'm'){
+        E();
+
+        if( c== '.') {
+            c = leer_caracter();
+
+            return;
+        } else {
+            printf("se esperaba .\n");
+            error();
+        }
+        return;
+    }else if(c == '['){
+        c = leer_caracter();
+
+        if(c == 'a') {
+            c = leer_caracter();
+
+            if(c == '{') {
+                c = leer_caracter();
+                E();
+
+                if(c == '}') {
+                    c = leer_caracter();
+
+                    if(c == ']') {
+                        c = leer_caracter();
+                        return;
+                    } else {
+                        printf("se esperaba ]\n");
+                        error();
+                    }
+                } else {
+                    printf("se esperaba }\n");
+                    error();
+                }
+            } else {
+                printf("se esperaba {\n");
+                error();
+            }
+        } else {
+            printf("se esperaba IDENTIFICADOR\n");
+            error();
+        }
+        return;
+    }else if(c == 's') {
+        c = leer_caracter();
+
+        if(c == '.') {
+            leer_caracter();
+            return;
+        } else {
+            printf("se esperaba .\n");
+            error();
+        }
+        return;
+    }else{
+        printf("Se esperaba ( o IDENTIFICADOR/CONSTANTE_ENTERA/CONSTANTE_FLOTANTE/--/++ o VOID/UNSIGNED\n");
         error();
         return;
     }
 }
 
-void E(){
-    printf("E\n");
-    if(c == '(' || c == 'a' || c == 'n' || c == 'r' || c == 'l' || c == 'm'){
-        T();
-        Eprima();
+void opAsig(){
+    printf("opAsig\n");
+    if (c == '='){
+        c = leer_caracter();
+        
+        return;
+    }else if(c == '#'){
+        c = leer_caracter();
+
+        return;
+    }else if(c == ';'){
+        c = leer_caracter();
+
+        return;
+    }else if(c == '$'){
+        c = leer_caracter();
+
+        return;
+    }else if(c == ','){
+        c = leer_caracter();
+
+        return;
+    }else if(c == '?'){
+        c = leer_caracter();
+
+        return;
+    }else if(c == ':'){
+        c = leer_caracter();
+
+        return;
+    }else if(c == '^'){
+        c = leer_caracter();
+
+        return;
+    }else if(c == '@'){
+        c = leer_caracter();
+        
+        return;
+    }else if(c == '<'){
+        c = leer_caracter();
+
+        return;
+    }else if(c == '>'){
+        c = leer_caracter();
+
         return;
     }else{
-        printf("Se esperaba ( o IDENTIFICADOR/CONSTANTE_ENTERA/CONSTANTE_FLOTANTE/++/--\n");
+        printf("Se esperaba = o += o -= o *= o /= o &= o ^= o |= o <<= o >>=\n");
         error();
         return;
     }

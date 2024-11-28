@@ -380,6 +380,7 @@ int main(int argc, char **argv) {
     
     // Analizador Sintactico
     printf("\nCadena de atomos generada:\n%s\n", cadena_atomos->cadena);
+    insertar_atomo(EOF);
 
     c = leer_caracter();
     Program();
@@ -797,27 +798,26 @@ void dec() {
 
 void Sent(){
     printf("Sent\n");
-    printf("entra %c -----------------------------------\n", c);
     if(c == 'a'){
         Asig();
         return;
     }
-    else if(c = 'd'){
+    else if(c == 'd'){
         doW();
         return;
-    }else if(c = 'i'){
+    }else if(c == 'i'){
         IF();
         return;
-    }else if(c = 'k'){
+    }else if(c == 'k'){
         SWITCH();
         return;
-    }else if(c = 'v'){
+    }else if(c == 'v'){
         For();
         return;
-    }else if(c = 'x'){
+    }else if(c == 'x'){
         Ret();
         return;
-    }else if(c = 'c'){
+    }else if(c == 'c'){
         c = leer_caracter();
         if(c == '.'){
             c = leer_caracter();
@@ -826,7 +826,7 @@ void Sent(){
             printf("Se esperaba .\n");
             error();
         }
-    }else if(c = 'b'){
+    }else if(c == 'b'){
         c = leer_caracter();
         if(c == '.'){
             c = leer_caracter();
@@ -849,7 +849,7 @@ void listaSent() {
         listaSent();
         return;
     }
-    else if ( c == '}' || c == EOF) {
+    else if ( c == ']' || c == EOF || c == '}') {
         return;
     }
     else {
@@ -860,7 +860,6 @@ void listaSent() {
 
 void doW(){
     printf("doW\n");
-    printf("entra -> %c XDDDDDDDDDDDD\n", c);
     if (c == 'd'){
 
         c = leer_caracter();
@@ -1101,6 +1100,37 @@ void For() {
         return;
     } else {
         printf("Se esperaba FOR\n");
+        error();
+    }
+}
+
+void Ret() {
+    printf("Ret\n");
+    if(c == 'x') {
+        c = leer_caracter();
+
+        if(c == '(') {
+            c = leer_caracter();
+            valRet();
+
+            if(c == ')') {
+                c = leer_caracter();
+
+                if(c == '.') {
+                    c = leer_caracter();
+                    return;
+                } else {
+                    error();
+                }
+            } else {
+                error();
+            }
+            
+        } else {
+            error();
+        }
+        return;
+    } else {
         error();
     }
 }
@@ -1377,7 +1407,7 @@ void G(){
 
         return;
     }else if(c == '*' || c == '/' || c == '%' || c == '+' 
-        || c == '-' || c == ')' || c == EOF){
+        || c == '-' || c == ')' || c == EOF || c == '.'){
         return;
     }else{
         printf("Se esperaba --/++ o * o / o + o - o **\n");
@@ -1412,7 +1442,7 @@ void Igualdad(){
             error();
         }
         return;
-    }else if(c = '['){
+    }else if(c == '['){
         c = leer_caracter();
 
         if(c == 'a') {
@@ -1441,7 +1471,7 @@ void Igualdad(){
             error();
         }
         return;
-    }else if(c = 's') {
+    }else if(c == 's') {
         c = leer_caracter();
 
         if(c == '.') {

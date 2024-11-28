@@ -13,25 +13,9 @@ VOID principal {INT w}
 INT Func_1{FLOAT x_1}
 [
    LONG FLOAT x_2 .
-   DOUBLE INT x_3 .
-   
-   x_2 = x_1 ** 3 .
+   x_2 = x_1 **3 .
    DO
    {
-     x_2 -= 20 .
-   } WHILE((x_2+5.8) && (x_1))
-   RETURN ((x_3-6)*2). 
-]
-
-DOUBLE INT Func_2{FLOAT val}
-[
-   INT a.
-   LONG CHAR Cadena.
-   a=25 .
-   Cadena= #asignacion de 6&2, #.
-   FOR(val)
-   {
-      val=val++ - a.
-   }
-   a=[Func_1{val}]
+      x_2 -= 20 .
+   } WHILE((x_2+5.8) && (x_1))   
 ]
